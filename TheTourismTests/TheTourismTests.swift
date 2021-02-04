@@ -10,52 +10,24 @@ import XCTest
 
 class TheTourismTests: XCTestCase {
   
-  public struct DestinationDomainModel: Identifiable {
-    public let id: Int
-    public let name: String
-    public let placeDescription: String
-    public let address: String
-    public let longitude: Double
-    public let latitude: Double
-    public let like: Int
-    public let image: String
-    public let isFavorite: Bool
-    
-    public init(
-      id: Int, name: String,
-      description: String, address: String,
-      longitude: Double, latitude: Double,
-      like: Int, image: String, isFavorite: Bool) {
-      
-      self.id = id
-      self.name = name
-      self.placeDescription = description
-      self.address = address
-      self.longitude = longitude
-      self.latitude = latitude
-      self.like = like
-      self.image = image
-      self.isFavorite = isFavorite
-    }
+  override func setUpWithError() throws {
+      // Put setup code here. This method is called before the invocation of each test method in the class.
   }
-  
-  var destinations = [DestinationDomainModel]()
-  
-  func testInvalidInputDestination() {
-    XCTAssertThrowsError(
-      try detectInformationDestination(
-        id: 1, name: "Alun-Alun Bandung", address: "Kota Bandung", like: 100)) { error in
-      XCTAssertEqual(error as? DestinationErrorType, DestinationErrorType.invalidInput)
-    }
-  }
-  
-  func detectInformationDestination(
-    id: Int, name: String, address: String, like: Int) throws {
-    
-  }
-  
-}
 
-enum DestinationErrorType: Error {
-  case invalidInput
+  override func tearDownWithError() throws {
+      // Put teardown code here. This method is called after the invocation of each test method in the class.
+  }
+
+  func testExample() throws {
+      // This is an example of a functional test case.
+      // Use XCTAssert and related functions to verify your tests produce the correct results.
+  }
+
+  func testPerformanceExample() throws {
+      // This is an example of a performance test case.
+      self.measure {
+          // Put the code you want to measure the time of here.
+      }
+  }
+  
 }
