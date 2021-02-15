@@ -13,13 +13,16 @@ public struct GetDetailDestinationRepository<
   RemoteDataSource: DataSource,
   Transofrmer: Mapper>: Repository
 where
+  DestinationLocalDataSource.Request == String,
   DestinationLocalDataSource.Response == DestinationModuleEntity,
-  RemoteDataSource.Response == [DestinationResponse],
+  RemoteDataSource.Request == String,
+  RemoteDataSource.Response == DestinationResponse,
+  Transofrmer.Request == String,
   Transofrmer.Response == DestinationResponse,
   Transofrmer.Entity == DestinationModuleEntity,
   Transofrmer.Domain == DestinationDomainModel {
   
-  public typealias Request = Any
+  public typealias Request = String
   public typealias Response = DestinationDomainModel
   
   private let _localeDataSource: DestinationLocalDataSource
@@ -36,23 +39,12 @@ where
     _mapper = mapper
   }
   
-  public func execute(request: Any?) -> AnyPublisher<DestinationDomainModel, Error> {
-    return _localeDataSource.getDetailDestination(request: (request as? Int))
-        .map { _mapper.transformEntityToDomainDetail(entity: $0)}
-        .eraseToAnyPublisher()
-  }
-  
-  public func execute_two(request: Any?, useInfo: Int?) -> AnyPublisher<Bool, Error> {
-    let dataMapper = _mapper.transformDomainToEntities(domain: (request as? DestinationDomainModel)!)
-    if useInfo == 0 {
-      return _localeDataSource.isFavoriteDestination(entity: dataMapper)
-        .eraseToAnyPublisher()
-    } else if useInfo == 1 {
-      return _localeDataSource.addToFavoriteDestination(entity: dataMapper)
-        .eraseToAnyPublisher()
-    } else {
-      return _localeDataSource.removeFavoriteDestination(entity: dataMapper)
-        .eraseToAnyPublisher()
-    }
+  public func execute(request: String?) -> AnyPublisher<DestinationDomainModel, Error> {
+    print("\(request) KASMKMASKMSA")
+    guard let request = request else { fatalError("Request cannot be empty") }
+    
+    return _localeDataSource.get(request: request)
+      .map { _mapper.transformEntityToDomain(entity: $0) }
+      .eraseToAnyPublisher()
   }
 }

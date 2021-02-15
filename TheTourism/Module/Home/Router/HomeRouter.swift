@@ -12,22 +12,19 @@ import Destination
 
 public class HomeRouter {
   
-  func linkBuilder<Content: View>(
-    for destination: DestinationDomainModel,
-    @ViewBuilder content: () -> Content) -> some View {
-    NavigationLink(
-      destination: self.makeDetailView(for: destination)) {
-      content()
-    }
-  }
-  
   public func makeDetailView(for destination: DestinationDomainModel) -> some View {
     let destinationUseCase: Interactor<
-      Any, DestinationDomainModel, GetDetailDestinationRepository<
-          GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DetailDestinationTransformer>
+      String, DestinationDomainModel, GetDetailDestinationRepository<
+          GetDestinationLocaleDataSource, GetDetailDestinationRemoteDataSource, DetailDestinationTransformer>
             > = Injection.init().provideDetail()
     
-    let presenter = GetDetailPresenter(useCase: destinationUseCase, detailDestination: destination)
-    return DetailView(presenter: presenter)
+    let favoriteUseCase: Interactor<
+      String, DestinationDomainModel, UpdateFavoriteDestinationRepository<
+          FavoriteDestinationLocaleDataSource, DetailDestinationTransformer>
+            > = Injection.init().provideUpdateFavorite()
+    
+    let presenter = GetDetailPresenter(detailDestinationUseCase: destinationUseCase, favoriteUseCase: favoriteUseCase)
+    
+    return DetailView(presenter: presenter, destination: destination)
   }
 }

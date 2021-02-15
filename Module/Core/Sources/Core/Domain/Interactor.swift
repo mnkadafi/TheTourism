@@ -20,8 +20,4 @@ where R.Request == Request, R.Response == Response {
   public func execute(request: Request?) -> AnyPublisher<Response, Error> {
     _repository.execute(request: request)
   }
-  
-  public func execute_two(request: Request?, useInfo: Int?) -> AnyPublisher<Bool, Error> {
-    _repository.execute_two(request: request, useInfo: useInfo)
-  }
 }

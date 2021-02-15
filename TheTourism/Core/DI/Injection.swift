@@ -15,12 +15,14 @@ import UIKit
 final class Injection: NSObject {
   
   func provideDestination<U: UseCase>() -> U
-  where U.Request == Any, U.Response == [DestinationDomainModel] {
+  where U.Request == String, U.Response == [DestinationDomainModel] {
     
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     let locale = GetDestinationLocaleDataSource(realm: appDelegate!.realm)
     let remote = GetDestinationRemoteDataSource(endpoint: Endpoints.Gets.list.url)
-    let mapper = DestinationTransformer()
+    
+    let destinationMapper = DetailDestinationTransformer()
+    let mapper = DestinationTransformer(destinationMapper: destinationMapper)
     
     let repository = GetDestinationRepository(
       localeDataSource: locale,
@@ -31,31 +33,45 @@ final class Injection: NSObject {
   }
   
   func provideDetail<U: UseCase>() -> U
-  where U.Request == Any, U.Response == DestinationDomainModel {
+  where U.Request == String, U.Response == DestinationDomainModel {
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     let locale = GetDestinationLocaleDataSource(realm: appDelegate!.realm)
-    let remote = GetDestinationRemoteDataSource(endpoint: "")
+    let remote = GetDetailDestinationRemoteDataSource(endpoint: "")
+    
     let mapper = DetailDestinationTransformer()
     
     let repository = GetDetailDestinationRepository(
-      localeDataSource: locale,
-      remoteDataSource: remote,
-      mapper: mapper)
+      localeDataSource: locale, remoteDataSource: remote, mapper: mapper)
     
     return (Interactor(repository: repository) as? U)!
   }
   
   func provideFavorite<U: UseCase>() -> U
-  where U.Request == Any, U.Response == [DestinationDomainModel] {
+  where U.Request == String, U.Response == [DestinationDomainModel] {
     
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
-    let locale = GetDestinationLocaleDataSource(realm: appDelegate!.realm)
-    let remote = GetDestinationRemoteDataSource(endpoint: "")
-    let mapper = DestinationTransformer()
+    let locale = FavoriteDestinationLocaleDataSource(realm: appDelegate!.realm)
+    
+    let destinationMapper = DetailDestinationTransformer()
+    let mapper = DestinationTransformer(destinationMapper: destinationMapper)
     
     let repository = GetFavoriteDestinationRepository(
       localeDataSource: locale,
-      remoteDataSource: remote,
+      mapper: mapper)
+    
+    return (Interactor(repository: repository) as? U)!
+  }
+  
+  func provideUpdateFavorite<U: UseCase>() -> U
+  where U.Request == String, U.Response == DestinationDomainModel {
+    
+    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    let locale = FavoriteDestinationLocaleDataSource(realm: appDelegate!.realm)
+    
+    let mapper = DetailDestinationTransformer()
+    
+    let repository = UpdateFavoriteDestinationRepository(
+      localeDataSource: locale,
       mapper: mapper)
     
     return (Interactor(repository: repository) as? U)!

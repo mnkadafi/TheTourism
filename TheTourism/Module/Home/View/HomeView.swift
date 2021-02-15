@@ -11,22 +11,10 @@ import Destination
 
 public struct HomeView: View {
   @ObservedObject var presenter: GetListPresenter<
-    Any, DestinationDomainModel, Interactor<
-      Any, [DestinationDomainModel], GetDestinationRepository<
-        GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DestinationTransformer>>>
-//
-//  let action: (() -> Destination)
-//
-//  public init(
-//    presenterDes: GetListPresenter<
-//      Any, DestinationDomainModel, Interactor<
-//        Any, [DestinationDomainModel], GetDestinationRepository<
-//          GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DestinationTransformer>>>,
-//    action: @escaping (() -> Destination)
-//  ) {
-//    self.action = action
-//    self.presenterDes = presenterDes
-//  }
+    String, DestinationDomainModel, Interactor<
+      String, [DestinationDomainModel], GetDestinationRepository<
+    GetDestinationLocaleDataSource, GetDestinationRemoteDataSource,
+        DestinationTransformer<DetailDestinationTransformer>>>>
   
   public var body: some View {
     ZStack {
@@ -60,16 +48,23 @@ extension HomeView {
   
   var content: some View {
     ScrollView(.vertical, showsIndicators: false) {
-      ForEach(
-        self.presenter.list,
-        id: \.id
-      ) { destination in
+      ForEach(self.presenter.list, id: \.id) { destination in
         ZStack {
-          HomeRouter().linkBuilder(for: destination) {
+          self.linkBuilder(for: destination) {
             DestinationRow(destination: destination)
           }
         }.buttonStyle(PlainButtonStyle())
       }
     }
+  }
+  
+  func linkBuilder<Content: View>(
+      for destination: DestinationDomainModel,
+      @ViewBuilder content: () -> Content
+  ) -> some View {
+      
+      NavigationLink(
+          destination: HomeRouter().makeDetailView(for: destination)
+      ) { content() }
   }
 }

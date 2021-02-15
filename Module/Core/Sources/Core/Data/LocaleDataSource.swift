@@ -11,12 +11,9 @@ public protocol LocaleDataSource {
   associatedtype Request
   associatedtype Response
   
-  func getListDestination(request: Request?) -> AnyPublisher<[Response], Error>
-  func addListDestination(entities: [Response]) -> AnyPublisher<Bool, Error>
-  func getDetailDestination(request: Int?) -> AnyPublisher<Response, Error>
-  func getFavoriteList(request: Request?) -> AnyPublisher<[Response], Error>
-  func isFavoriteDestination(entity: Response) -> AnyPublisher<Bool, Error>
-  func addToFavoriteDestination(entity: Response) -> AnyPublisher<Bool, Error>
-  func removeFavoriteDestination(entity: Response) -> AnyPublisher<Bool, Error>
-  func searchFavoriteByTitle(title: String) -> AnyPublisher<[Response], Error>
+  func list(request: Request?) -> AnyPublisher<[Response], Error>
+  func add(entities: [Response]) -> AnyPublisher<Bool, Error>
+  func get(request: String) -> AnyPublisher<Response, Error>
+  func update(id: String?, entity: Response) -> AnyPublisher<Bool, Error>
+  func search(title: String) -> AnyPublisher<[Response], Error>
 }

@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //  
 //
-//  Created by Mochamad Nurkhayal Kadafi on 10/01/21.
+//  Created by Mochamad Nurkhayal Kadafi on 12/02/21.
 //
 
 import SwiftUI

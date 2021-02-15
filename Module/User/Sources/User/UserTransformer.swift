@@ -9,13 +9,14 @@ import Core
 
 public struct UserTransformer: Mapper {
   
+  public typealias Request = String
   public typealias Response = Any
   public typealias Entity = UserModuleEntity
   public typealias Domain = UserDomainModel
   
   public init() {}
   
-  public func transformResponseToEntity(response: Any) -> UserModuleEntity {
+  public func transformResponseToEntity(request: String?, response: Any) -> UserModuleEntity {
     fatalError()
   }
   

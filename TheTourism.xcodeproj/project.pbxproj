@@ -33,7 +33,6 @@
 		B44C51A22581BEE00040DB5F /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44C51A12581BEE00040DB5F /* DetailView.swift */; };
 		B44C51AC2581BF0D0040DB5F /* FavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44C51AB2581BF0D0040DB5F /* FavoriteView.swift */; };
 		B44C51B12581BF210040DB5F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44C51B02581BF210040DB5F /* FavoriteRow.swift */; };
-		B44C51BB2581BF480040DB5F /* FavoriteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44C51BA2581BF480040DB5F /* FavoriteRouter.swift */; };
 		B44C51C52581BF8E0040DB5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44C51C42581BF8E0040DB5F /* ProfileView.swift */; };
 		B456CA9A25A2A83700B4854A /* CustomEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456CA9925A2A83700B4854A /* CustomEmptyView.swift */; };
 		B49B68D225BED70E005B762F /* User in Frameworks */ = {isa = PBXBuildFile; productRef = B49B68D125BED70E005B762F /* User */; };
@@ -88,7 +87,6 @@
 		B44C51A12581BEE00040DB5F /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		B44C51AB2581BF0D0040DB5F /* FavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteView.swift; sourceTree = "<group>"; };
 		B44C51B02581BF210040DB5F /* FavoriteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRow.swift; sourceTree = "<group>"; };
-		B44C51BA2581BF480040DB5F /* FavoriteRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRouter.swift; sourceTree = "<group>"; };
 		B44C51C42581BF8E0040DB5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B456CA9925A2A83700B4854A /* CustomEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEmptyView.swift; sourceTree = "<group>"; };
 		B49B68CA25BEB3FF005B762F /* User */ = {isa = PBXFileReference; lastKnownFileType = folder; name = User; path = Module/User; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 			isa = PBXGroup;
 			children = (
 				B44C51542581B3850040DB5F /* View */,
-				B44C51532581B3810040DB5F /* Router */,
 			);
 			path = Favorite;
 			sourceTree = "<group>";
@@ -336,14 +333,6 @@
 				B44C51A12581BEE00040DB5F /* DetailView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		B44C51532581B3810040DB5F /* Router */ = {
-			isa = PBXGroup;
-			children = (
-				B44C51BA2581BF480040DB5F /* FavoriteRouter.swift */,
-			);
-			path = Router;
 			sourceTree = "<group>";
 		};
 		B44C51542581B3850040DB5F /* View */ = {
@@ -533,7 +522,6 @@
 				B44C509F2581B06B0040DB5F /* ContentView.swift in Sources */,
 				B4252F3A25BAE03300CD8F08 /* SearchBar.swift in Sources */,
 				B44C51B12581BF210040DB5F /* FavoriteRow.swift in Sources */,
-				B44C51BB2581BF480040DB5F /* FavoriteRouter.swift in Sources */,
 				B44C51982581BE800040DB5F /* HomeRouter.swift in Sources */,
 				B44C51012581B2130040DB5F /* Injection.swift in Sources */,
 				B431B81A25AB2A3500C84EAE /* CustomInformationView.swift in Sources */,

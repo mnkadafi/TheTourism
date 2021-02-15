@@ -59,7 +59,7 @@ struct DestinationRow_Previews: PreviewProvider {
       "eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1354&q=80"
     
     let destination = DestinationDomainModel(
-      id: 1,
+      id: "1",
       name: "Gunung Bromo",
       description: """
 Gunung Bromo (dari bahasa Sanskerta:

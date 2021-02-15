@@ -14,9 +14,13 @@ struct DetailView: View {
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   @State private var showingAlert = false
   @ObservedObject var presenter: GetDetailPresenter<
-    Any, DestinationDomainModel, Interactor<
-      Any, DestinationDomainModel, GetDetailDestinationRepository<
-        GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DetailDestinationTransformer>>>
+    Interactor<String, DestinationDomainModel, GetDetailDestinationRepository<
+        GetDestinationLocaleDataSource, GetDetailDestinationRemoteDataSource,
+        DetailDestinationTransformer>>,
+    Interactor<String, DestinationDomainModel, UpdateFavoriteDestinationRepository<
+        FavoriteDestinationLocaleDataSource, DetailDestinationTransformer>>>
+  
+  var destination: DestinationDomainModel
   
   var body: some View {
     ZStack {
@@ -45,11 +49,10 @@ struct DetailView: View {
               .padding(EdgeInsets.init(top: 0, leading: 16, bottom: 10, trailing: 16))
           }
         }
-        
       }
     }
     .onAppear {
-      self.presenter.isFavoriteDestination(request: self.presenter.detailDestination as Any)
+      self.presenter.getDetail(request: destination.id)
     }
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: btnBack)
@@ -79,10 +82,13 @@ extension DetailView {
       Text("Loading...")
       ActivityIndicator()
     }
+    .onAppear {
+      self.presenter.getDetail(request: destination.id)
+    }
   }
   
   var imageCategory: some View {
-    WebImage(url: URL(string: self.presenter.detailDestination!.image))
+    WebImage(url: URL(string: self.destination.image))
       .resizable()
       .indicator(.activity)
       .transition(.fade(duration: 0.5))
@@ -112,20 +118,17 @@ extension DetailView {
   
   var favorite: some View {
     Button(action: {
-      if self.presenter.isFavorite {
-        self.presenter.removeFavoriteDestination(request: self.presenter.detailDestination as Any)
-        self.presenter.isFavoriteDestination(request: self.presenter.detailDestination as Any)
-      } else {
-        self.presenter.addToFavoriteDestination(request: self.presenter.detailDestination as Any)
-        self.presenter.isFavoriteDestination(request: self.presenter.detailDestination as Any)
-      }
+      self.presenter.updateFavoriteDestination(request: String(self.destination.id))
       
       self.showingAlert.toggle()
     }) {
-      if self.presenter.isFavorite {
+      if self.presenter.detailDestination!.isFavorite == true {
         Text("Remove From Favorite")
           .font(.system(size: 20))
           .bold()
+          .onAppear {
+            self.presenter.getDetail(request: destination.id)
+          }
       } else {
         Text("Add To Favorite")
           .font(.system(size: 20))
@@ -133,10 +136,12 @@ extension DetailView {
       }
     }
     .alert(isPresented: $showingAlert) {
-      if self.presenter.isFavorite {
-        return Alert(title: Text("Info"), message: Text("Destination Has Added"), dismissButton: .default(Text("Ok")))
+      if self.presenter.detailDestination!.isFavorite == true {
+        return Alert(title: Text("Info"), message: Text("Destination Has Added"),
+                     dismissButton: .default(Text("Ok")))
       } else {
-        return Alert(title: Text("Info"), message: Text("Destination Has Removed"), dismissButton: .default(Text("Ok")))
+        return Alert(title: Text("Info"), message: Text("Destination Has Removed"),
+                     dismissButton: .default(Text("Ok")))
       }
     }
     .frame(width: UIScreen.main.bounds.width - 32, height: 50)

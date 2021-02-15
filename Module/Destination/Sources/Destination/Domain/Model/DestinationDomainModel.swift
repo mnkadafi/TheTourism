@@ -9,7 +9,7 @@ import Foundation
 
 public struct DestinationDomainModel: Equatable, Identifiable {
   
-  public let id: Int
+  public let id: String
   public let name: String
   public let placeDescription: String
   public let address: String
@@ -20,7 +20,7 @@ public struct DestinationDomainModel: Equatable, Identifiable {
   public let isFavorite: Bool
   
   public init(
-    id: Int, name: String,
+    id: String, name: String,
     description: String, address: String,
     longitude: Double, latitude: Double,
     like: Int, image: String, isFavorite: Bool) {

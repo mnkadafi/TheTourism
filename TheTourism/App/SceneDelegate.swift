@@ -21,23 +21,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
              options connectionOptions: UIScene.ConnectionOptions
   ) {
 
-    let destinationUseCase: Interactor<
-      Any, [DestinationDomainModel], GetDestinationRepository<
-        GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DestinationTransformer>>
-          = Injection.init().provideDestination()
+    let injection = Injection()
     
-    let homePresenter = GetListPresenter(useCase: destinationUseCase)
+    let destinationUseCase: Interactor<
+      String,
+      [DestinationDomainModel],
+      GetDestinationRepository<
+        GetDestinationLocaleDataSource,
+        GetDestinationRemoteDataSource,
+        DestinationTransformer<DetailDestinationTransformer>>>
+          = injection.provideDestination()
     
     let favoriteUseCase: Interactor<
-      Any, [DestinationDomainModel], GetFavoriteDestinationRepository<
-        GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DestinationTransformer>>
-          = Injection.init().provideFavorite()
-    let favoritePresenter = GetFavoritePresenter(useCase: favoriteUseCase)
+      String,
+      [DestinationDomainModel],
+      GetFavoriteDestinationRepository<
+        FavoriteDestinationLocaleDataSource,
+        DestinationTransformer<DetailDestinationTransformer>>>
+          = injection.provideFavorite()
     
     let profileUseCase: Interactor<
       Any, UserDomainModel, GetUserRepository<
-        GetUserLocaleDataSource, UserTransformer>> = Injection.init().provideProfile()
+        GetUserLocaleDataSource,
+        UserTransformer>> = injection.provideProfile()
     
+    let homePresenter = GetListPresenter(useCase: destinationUseCase)
+    let favoritePresenter = GetFavoritePresenter(useCase: favoriteUseCase)
     let profilePresenter = GetUserPresenter(useCase: profileUseCase)
 
     let contentView = ContentView()

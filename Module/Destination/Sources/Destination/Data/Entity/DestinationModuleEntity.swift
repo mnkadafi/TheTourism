@@ -10,7 +10,7 @@ import RealmSwift
 
 public class DestinationModuleEntity: Object {
   
-  @objc dynamic var id: Int = 0
+  @objc dynamic var id: String = ""
   @objc dynamic var name: String = ""
   @objc dynamic var placeDescription: String = ""
   @objc dynamic var address: String = ""

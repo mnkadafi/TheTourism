@@ -11,9 +11,14 @@ import Destination
 
 struct FavoriteView: View {
   @ObservedObject var presenter: GetFavoritePresenter<
-    Any, DestinationDomainModel, Interactor<
-      Any, [DestinationDomainModel], GetFavoriteDestinationRepository<
-        GetDestinationLocaleDataSource, GetDestinationRemoteDataSource, DestinationTransformer>>>
+    String,
+    DestinationDomainModel,
+    Interactor<
+      String,
+      [DestinationDomainModel],
+      GetFavoriteDestinationRepository<
+        FavoriteDestinationLocaleDataSource,
+        DestinationTransformer<DetailDestinationTransformer>>>>
   
   var body: some View {
     ZStack {
@@ -38,7 +43,7 @@ struct FavoriteView: View {
               } else {
                 ForEach(self.presenter.filteredData, id: \.id) { destination in
                     ZStack {
-                      FavoriteRouter().linkBuilder(for: destination) {
+                      self.linkBuilder(for: destination) {
                         FavoriteRow(destination: destination)
                       }
                     }.buttonStyle(PlainButtonStyle())
@@ -55,4 +60,18 @@ struct FavoriteView: View {
       displayMode: .automatic
     )
   }
+}
+
+extension FavoriteView {
+  
+  func linkBuilder<Content: View>(
+      for destination: DestinationDomainModel,
+      @ViewBuilder content: () -> Content
+  ) -> some View {
+      
+      NavigationLink(
+          destination: HomeRouter().makeDetailView(for: destination)
+      ) { content() }
+  }
+  
 }
